@@ -77,4 +77,4 @@ See [KYC-AML-Agent-Build-Plan.md](KYC-AML-Agent-Build-Plan.md) for the full impl
 
 ## License
 
-MIT — portfolio / educational use. Not production compliance software.
+MIT — portfolio / educational use. Not production compliance software. See [LICENSE](LICENSE) for details.
