@@ -1,0 +1,9 @@
+- This is a LangGraph multi-agent KYC/AML system. Read src/state.py before touching any node.
+- Every graph node returns a dict of ONLY the fields it updates, and always appends one
+  AuditEntry to audit_log. Never rebuild the whole state.
+- Detection uses the trained LightGBM model, never an LLM. LLMs are only for extraction,
+  reasoning, and narrative.
+- Risk scoring must stay deterministic and explainable — no LLM, no hidden logic.
+- Verify LangChain/LangGraph API signatures against the installed version before writing code.
+- Write a pytest test for every data module and agent node.
+- Use MODEL_CHEAP for extraction, MODEL_STRONG for reasoning/SAR only.

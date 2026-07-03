@@ -1,0 +1,25 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.env
+
+# Data & models (downloaded / trained / generated)
+data/raw/
+data/models/*
+!data/models/.gitkeep
+data/generated/*
+!data/generated/.gitkeep
+
+# IDE
+.idea/
+.vscode/
+.DS_Store
+
+# Jupyter
+.ipynb_checkpoints/
+
+# pytest
+.pytest_cache/

@@ -1,0 +1,31 @@
+[project]
+name = "kyc-aml-agent"
+version = "0.1.0"
+description = "Agentic KYC/AML compliance system on LangGraph"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "langgraph",
+    "langchain",
+    "langchain-anthropic",
+    "langchain-community",
+    "pydantic>=2",
+    "rapidfuzz",
+    "lightgbm",
+    "scikit-learn",
+    "pandas",
+    "numpy",
+    "faker",
+    "fastapi",
+    "uvicorn",
+    "streamlit",
+    "python-dotenv",
+    "kaggle",
+    "joblib",
+]
+
+[dependency-groups]
+dev = ["pytest"]
+
+[tool.uv]
+package = false
