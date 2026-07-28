@@ -1,9 +1,8 @@
-from langchain_anthropic import ChatAnthropic
-
 from src.config import MODEL_CHEAP
+from src.llm import get_chat_model
 from src.state import AuditEntry, CaseState, ExtractedIdentity
 
-llm = ChatAnthropic(model=MODEL_CHEAP, temperature=0).with_structured_output(ExtractedIdentity)
+llm = get_chat_model(MODEL_CHEAP, temperature=0).with_structured_output(ExtractedIdentity)
 
 
 def intake_node(state: CaseState) -> dict:

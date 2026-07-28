@@ -1,9 +1,8 @@
-from langchain_anthropic import ChatAnthropic
-
 from src.config import MODEL_STRONG
+from src.llm import get_chat_model
 from src.state import AuditEntry, CaseState
 
-llm = ChatAnthropic(model=MODEL_STRONG, temperature=0.2)
+llm = get_chat_model(MODEL_STRONG, temperature=0.2)
 
 
 def sar_draft_node(state: CaseState) -> dict:

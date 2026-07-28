@@ -14,7 +14,7 @@ class _FakeMessage:
 
 
 class _FakeLLM:
-    """Stands in for a ChatAnthropic client; returns a canned response."""
+    """Stands in for a chat model client; returns a canned response."""
 
     def __init__(self, response):
         self._response = response

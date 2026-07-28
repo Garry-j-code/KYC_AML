@@ -1,10 +1,9 @@
-from langchain_anthropic import ChatAnthropic
-
 from src.config import MODEL_STRONG
 from src.data.transactions import score_account
+from src.llm import get_chat_model
 from src.state import AuditEntry, CaseState
 
-llm = ChatAnthropic(model=MODEL_STRONG, temperature=0)
+llm = get_chat_model(MODEL_STRONG, temperature=0)
 
 
 def monitoring_node(state: CaseState) -> dict:

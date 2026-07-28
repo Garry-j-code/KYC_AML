@@ -23,7 +23,7 @@ Requires [uv](https://docs.astral.sh/uv/) (`curl -LsSf https://astral.sh/uv/inst
 
 ```bash
 uv sync --group dev
-cp .env.example .env   # add ANTHROPIC_API_KEY
+cp .env.example .env   # add GROQ_API_KEY (free tier at console.groq.com)
 
 # Download datasets
 bash scripts/download_data.sh
