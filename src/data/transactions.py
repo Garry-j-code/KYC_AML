@@ -1,9 +1,10 @@
+import math
 from pathlib import Path
 
 import joblib
 import lightgbm as lgb
 import pandas as pd
-from sklearn.metrics import recall_score
+from sklearn.metrics import average_precision_score, precision_score, recall_score
 from sklearn.model_selection import train_test_split
 
 from src.config import AML_MODEL_PATH, TRANSACTIONS_CSV
@@ -29,12 +30,25 @@ def train(raw_path: Path | None = None, model_path: Path | None = None) -> lgb.L
     df = _features(pd.read_csv(raw_path))
     X, y = df[FEATS], df["Is Laundering"].astype(int)
     Xtr, Xte, ytr, yte = train_test_split(X, y, test_size=0.2, stratify=y, random_state=42)
-    pos_weight = (ytr == 0).sum() / max((ytr == 1).sum(), 1)
+    # The classes are extremely imbalanced (~0.1% positives). Using the raw
+    # neg/pos ratio as scale_pos_weight maximizes recall but flags ~20% of all
+    # transactions (useless precision). Dampen it with sqrt so the model stays
+    # sensitive without saturating every account's risk score.
+    imbalance = (ytr == 0).sum() / max((ytr == 1).sum(), 1)
+    pos_weight = math.sqrt(imbalance)
     clf = lgb.LGBMClassifier(scale_pos_weight=pos_weight, n_estimators=300, verbose=-1)
     clf.fit(Xtr, ytr)
-    y_pred = clf.predict(Xte)
+    proba = clf.predict_proba(Xte)[:, 1]
+    y_pred = (proba >= 0.5).astype(int)
     recall = recall_score(yte, y_pred, zero_division=0)
-    print(f"Positive-class recall on holdout: {recall:.3f}")
+    precision = precision_score(yte, y_pred, zero_division=0)
+    pr_auc = average_precision_score(yte, proba)
+    flagged_rate = y_pred.mean()
+    print(
+        f"Holdout metrics — recall: {recall:.3f}  precision: {precision:.3f}  "
+        f"PR-AUC: {pr_auc:.3f}  flagged: {flagged_rate:.3%} "
+        f"(base rate {yte.mean():.3%})"
+    )
     model_path.parent.mkdir(parents=True, exist_ok=True)
     joblib.dump(clf, model_path)
     return clf
