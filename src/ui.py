@@ -1,3 +1,14 @@
+import sys
+from pathlib import Path
+
+# Streamlit runs this file directly and only puts its own directory (.../src)
+# on sys.path, not the project root. Add the root so `import src...` resolves
+# (mirrors scripts/train_model.py and scripts/smoke_e2e.py). The project is not
+# installed (pyproject: package = false) and has no __init__.py packages.
+_ROOT = Path(__file__).resolve().parent.parent
+if str(_ROOT) not in sys.path:
+    sys.path.insert(0, str(_ROOT))
+
 import json
 
 import streamlit as st
